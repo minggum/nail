@@ -1,0 +1,978 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>cabbage nails · 영상 속 네일 제품 쇼핑</title>
+<meta name="description" content="틱톡 네일아트 영상에서 사용한 제품을 영상별로 모아보고 구매할 수 있는 페이지" />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet">
+<style>
+  /* =========================================================
+     디자인 토큰 — 네일 스튜디오 (글로시 블러쉬)
+     ========================================================= */
+  :root{
+    --bg:#fff7f5;
+    --bg-soft:#fdedf0;
+    --card:#ffffff;
+    --ink:#2c1d25;
+    --ink-2:#6f5560;
+    --ink-3:#a08a93;
+    --line:#f4e2e7;
+    --line-2:#eed2da;
+    --brand:#f0427e;
+    --brand-ink:#d62b67;
+    --brand-soft:#ffe6ef;
+    --sale:#ff3b6b;
+    --radius:20px;
+    --radius-sm:12px;
+    --shadow:0 2px 6px rgba(160,80,110,.06), 0 10px 30px rgba(160,80,110,.08);
+    --shadow-lg:0 22px 60px rgba(120,40,80,.20);
+    --maxw:1180px;
+    --ease:cubic-bezier(.2,.7,.2,1);
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    font-family:"Pretendard","Pretendard Variable",system-ui,-apple-system,"Apple SD Gothic Neo",sans-serif;
+    color:var(--ink);
+    background:var(--bg);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;cursor:pointer;}
+  img{display:block;max-width:100%;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px;}
+  .script{font-family:"Parisienne",cursive;font-weight:400;}
+  .eyebrow{font-size:11.5px;letter-spacing:.26em;text-transform:uppercase;font-weight:800;color:var(--brand);}
+
+  /* =========================================================
+     헤더
+     ========================================================= */
+  header.site{
+    position:sticky;top:0;z-index:40;
+    background:rgba(255,247,245,.82);
+    backdrop-filter:saturate(180%) blur(14px);
+    -webkit-backdrop-filter:saturate(180%) blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .bar{display:flex;align-items:center;gap:14px;height:64px;}
+  .logo{display:flex;align-items:baseline;gap:7px;}
+  .logo .drop{
+    align-self:center;width:30px;height:30px;border-radius:50% 50% 50% 12px;flex:0 0 auto;
+    background:radial-gradient(circle at 32% 28%, #ffd0e2, var(--brand) 70%);
+    box-shadow:0 4px 12px rgba(240,66,126,.4), inset 0 2px 4px rgba(255,255,255,.5);
+    transform:rotate(-12deg);
+  }
+  .logo .nm{font-family:"Parisienne",cursive;font-size:27px;line-height:1;color:var(--ink);}
+  .logo .sub{font-size:12px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--brand);}
+  .bar .spacer{flex:1;}
+  .tt-btn{
+    height:40px;border-radius:999px;border:0;padding:0 16px;font-weight:800;font-size:14px;
+    background:var(--ink);color:#fff;display:inline-flex;align-items:center;gap:7px;transition:.18s var(--ease);
+  }
+  .tt-btn:hover{background:#000;transform:translateY(-1px);}
+  .gear{
+    width:40px;height:40px;border-radius:50%;border:1px solid var(--line-2);background:#fff;color:var(--ink-2);
+    display:grid;place-items:center;transition:.18s var(--ease);
+  }
+  .gear:hover{border-color:var(--brand);color:var(--brand);}
+
+  /* 대가성(공정위) 고지 — 법적 필수 */
+  .disclosure{background:var(--bg-soft);border-bottom:1px solid var(--line);color:var(--ink-3);font-size:12.5px;text-align:center;}
+  .disclosure .wrap{padding:8px 20px;}
+
+  /* =========================================================
+     히어로
+     ========================================================= */
+  .hero{position:relative;padding:56px 0 30px;overflow:hidden;}
+  .hero .eyebrow{display:block;margin-bottom:14px;}
+  .hero h1{margin:0;font-size:clamp(34px,7vw,62px);line-height:1.02;color:var(--ink);}
+  .hero h1 .pink{color:var(--brand);}
+  .hero p{margin:18px 0 0;max-width:520px;font-size:clamp(15px,2.4vw,17px);color:var(--ink-2);}
+  .hero .handle{
+    display:inline-flex;align-items:center;gap:8px;margin-top:22px;
+    background:#fff;border:1px solid var(--line-2);border-radius:999px;padding:9px 16px 9px 13px;
+    font-weight:800;font-size:14px;color:var(--ink);transition:.18s var(--ease);
+  }
+  .hero .handle:hover{border-color:var(--brand);color:var(--brand);transform:translateY(-1px);}
+  /* 글로시 컬러 스와치 (시그니처) */
+  .dots{display:flex;gap:11px;margin-top:30px;}
+  .dots span{
+    width:30px;height:30px;border-radius:50%;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.05), 0 4px 10px rgba(0,0,0,.12);
+    position:relative;
+  }
+  .dots span::after{content:"";position:absolute;top:5px;left:7px;width:9px;height:6px;border-radius:50%;background:rgba(255,255,255,.75);filter:blur(.5px);}
+
+  /* =========================================================
+     필터 (영상별)
+     ========================================================= */
+  .filters{
+    position:sticky;top:64px;z-index:30;
+    background:rgba(255,247,245,.9);
+    backdrop-filter:saturate(180%) blur(12px);
+    -webkit-backdrop-filter:saturate(180%) blur(12px);
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:30px;
+  }
+  .filters .wrap{display:flex;align-items:center;gap:13px;padding:13px 20px;flex-wrap:wrap;}
+  .flabel{font-size:12px;font-weight:800;letter-spacing:.04em;color:var(--ink-3);flex:0 0 auto;}
+  .pillrow{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:2px;flex:1;min-width:0;}
+  .pillrow::-webkit-scrollbar{display:none;}
+  .fpill{
+    flex:0 0 auto;border:1px solid var(--line-2);background:#fff;color:var(--ink-2);
+    padding:8px 15px;border-radius:999px;font-weight:700;font-size:14px;transition:.16s var(--ease);white-space:nowrap;
+  }
+  .fpill:hover{border-color:var(--brand);color:var(--brand);}
+  .fpill[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:#fff;box-shadow:0 6px 16px rgba(240,66,126,.32);}
+  .search{display:flex;align-items:center;gap:8px;border:1px solid var(--line-2);border-radius:999px;padding:0 14px;height:42px;background:#fff;flex:0 0 auto;width:210px;max-width:100%;}
+  .search:focus-within{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft);}
+  .search input{border:0;outline:0;flex:1;font-size:15px;background:transparent;color:var(--ink);min-width:0;}
+  .search svg{flex:0 0 auto;color:var(--ink-3);}
+
+  /* =========================================================
+     상품 그리드
+     ========================================================= */
+  main{padding:28px 0 72px;}
+  .count{font-size:13px;color:var(--ink-3);margin:2px 0 20px;font-weight:700;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;}
+  .card{
+    display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    overflow:hidden;box-shadow:var(--shadow);transition:transform .24s var(--ease), box-shadow .24s var(--ease);
+  }
+  .card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);}
+  .thumb{position:relative;aspect-ratio:1/1;overflow:hidden;background:var(--bg-soft);}
+  .thumb-link{display:block;width:100%;height:100%;}
+  .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .45s var(--ease);}
+  .card:hover .thumb img{transform:scale(1.06);}
+  .thumb-ph{
+    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px;
+    background:
+      radial-gradient(130% 80% at 26% 16%, rgba(255,255,255,.85), transparent 46%),
+      radial-gradient(140% 140% at 82% 100%, color-mix(in srgb, var(--tile) 88%, #000), color-mix(in srgb, var(--tile) 90%, #fff));
+  }
+  .thumb-ph .pic{font-size:34px;filter:drop-shadow(0 2px 5px rgba(0,0,0,.16));}
+  .thumb-ph .pname{margin-top:9px;background:rgba(255,255,255,.8);color:#3a2a31;font-weight:800;font-size:12.5px;padding:5px 11px;border-radius:999px;max-width:88%;line-height:1.35;}
+  .badge{position:absolute;top:11px;left:11px;z-index:2;color:#fff;font-size:11px;font-weight:800;padding:5px 9px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.18);}
+  .disc{position:absolute;top:11px;right:11px;z-index:2;background:var(--sale);color:#fff;font-size:12px;font-weight:900;padding:5px 8px;border-radius:8px;box-shadow:0 4px 12px rgba(255,59,107,.4);}
+  /* 영상 칩 — 어떤 틱톡 영상에서 썼는지 */
+  .vchip{
+    position:absolute;left:10px;bottom:10px;right:10px;z-index:3;
+    display:inline-flex;align-items:center;gap:6px;max-width:calc(100% - 20px);
+    background:rgba(20,10,16,.72);color:#fff;font-size:12px;font-weight:700;
+    padding:7px 11px;border-radius:999px;backdrop-filter:blur(6px);transition:.16s var(--ease);
+  }
+  .vchip:hover{background:rgba(240,66,126,.92);}
+  .vchip .play{flex:0 0 auto;}
+  .vchip .vt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .body{padding:14px 15px 16px;display:flex;flex-direction:column;flex:1;}
+  .title{font-size:14.5px;font-weight:600;line-height:1.4;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:40px;}
+  .title:hover{color:var(--brand-ink);}
+  .colorline{display:flex;align-items:center;gap:7px;margin-top:9px;font-size:12.5px;color:var(--ink-2);font-weight:700;}
+  .swatch-dot{width:15px;height:15px;border-radius:50%;flex:0 0 auto;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08), 0 1px 3px rgba(0,0,0,.18);background:radial-gradient(circle at 30% 25%, rgba(255,255,255,.9), transparent 42%), var(--c);}
+  .price-row{margin-top:11px;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;}
+  .price{font-size:21px;font-weight:900;letter-spacing:-.02em;color:var(--ink);font-variant-numeric:tabular-nums;}
+  .orig{font-size:13px;color:var(--ink-3);text-decoration:line-through;font-weight:600;}
+  .cta{margin-top:13px;height:42px;border-radius:999px;border:0;background:var(--brand-soft);color:var(--brand-ink);font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;gap:6px;transition:.16s var(--ease);}
+  .card:hover .cta{background:var(--brand);color:#fff;box-shadow:0 8px 18px rgba(240,66,126,.34);}
+
+  .empty{grid-column:1/-1;text-align:center;padding:70px 20px;color:var(--ink-3);border:1.5px dashed var(--line-2);border-radius:var(--radius);}
+  .empty .big{font-size:17px;font-weight:800;color:var(--ink-2);margin-bottom:6px;}
+
+  /* =========================================================
+     푸터
+     ========================================================= */
+  footer.site{border-top:1px solid var(--line);background:var(--bg-soft);padding:36px 0 46px;}
+  footer.site .wrap{display:flex;flex-direction:column;gap:12px;}
+  footer .nm{font-family:"Parisienne",cursive;font-size:24px;color:var(--ink);}
+  footer .fine{font-size:12.5px;color:var(--ink-3);line-height:1.65;max-width:760px;}
+
+  /* =========================================================
+     관리자 패널
+     ========================================================= */
+  .overlay{position:fixed;inset:0;background:rgba(44,29,37,.45);z-index:60;opacity:0;visibility:hidden;transition:.25s var(--ease);}
+  .overlay.show{opacity:1;visibility:visible;}
+  .panel{position:fixed;top:0;right:0;height:100dvh;width:min(450px,100%);z-index:70;background:#fff;box-shadow:var(--shadow-lg);transform:translateX(100%);transition:transform .3s var(--ease);display:flex;flex-direction:column;}
+  .panel.show{transform:translateX(0);}
+  .panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:18px 20px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2;}
+  .panel-head h2{margin:0;font-size:18px;font-weight:900;letter-spacing:-.01em;}
+  .x{width:36px;height:36px;border-radius:50%;border:1px solid var(--line-2);background:#fff;font-size:17px;color:var(--ink-2);display:grid;place-items:center;}
+  .x:hover{background:var(--bg-soft);}
+  .panel-body{overflow-y:auto;padding:20px;flex:1;}
+  .help{background:var(--brand-soft);border:1px solid #ffc9dd;border-radius:14px;padding:13px 14px;font-size:12.8px;color:#a01e52;line-height:1.65;margin-bottom:20px;}
+  .help b{color:var(--brand-ink);}
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:13px;font-weight:800;color:var(--ink-2);margin-bottom:6px;}
+  .field .opt{font-weight:600;color:var(--ink-3);}
+  .field input,.field select,.field textarea{width:100%;border:1px solid var(--line-2);border-radius:11px;padding:11px 12px;font-size:15px;font-family:inherit;color:var(--ink);background:#fff;outline:0;transition:.15s var(--ease);}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft);}
+  .field textarea{resize:vertical;min-height:58px;}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .nv{background:var(--bg-soft);border:1px solid var(--line);border-radius:13px;padding:13px;margin-top:-2px;}
+  .nv .field:last-child{margin-bottom:0;}
+  .chk{display:flex;align-items:center;gap:9px;font-size:13.5px;font-weight:700;color:var(--ink-2);cursor:pointer;user-select:none;margin-bottom:12px;}
+  .chk input{width:18px;height:18px;accent-color:var(--brand);cursor:pointer;}
+  .colorbox{display:flex;gap:10px;align-items:flex-end;}
+  .colorbox .cwrap{flex:0 0 auto;}
+  .colorbox input[type="color"]{width:52px;height:46px;padding:4px;border-radius:11px;cursor:pointer;}
+  .colorbox .cname{flex:1;}
+  .submit{width:100%;height:48px;border:0;border-radius:999px;background:var(--brand);color:#fff;font-weight:800;font-size:15.5px;margin-top:4px;transition:.16s var(--ease);display:flex;align-items:center;justify-content:center;gap:7px;}
+  .submit:hover{background:var(--brand-ink);}
+  .submit.editing{background:#7a3fb0;}
+  .ghost{width:100%;height:42px;border:1px solid var(--line-2);background:#fff;border-radius:11px;font-weight:700;font-size:14px;color:var(--ink-2);margin-top:9px;}
+  .ghost:hover{background:var(--bg-soft);}
+
+  .sect-title{font-size:13px;font-weight:900;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;margin:26px 0 12px;}
+  .admin-list{display:flex;flex-direction:column;gap:8px;}
+  .li{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:13px;padding:8px;}
+  .li-thumb{width:44px;height:44px;border-radius:10px;flex:0 0 auto;object-fit:cover;}
+  .li-info{flex:1;min-width:0;}
+  .li-info .n{font-size:13.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .li-info .m{font-size:12px;color:var(--ink-3);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .li-act{display:flex;gap:5px;flex:0 0 auto;}
+  .mini{width:32px;height:32px;border-radius:9px;border:1px solid var(--line-2);background:#fff;font-size:14px;display:grid;place-items:center;color:var(--ink-2);}
+  .mini:hover{background:var(--bg-soft);}
+  .mini.del:hover{background:#ffe6ec;border-color:#f3b6c6;color:var(--sale);}
+
+  .tools{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;}
+  .tools .ghost{margin-top:0;}
+  .tools .full{grid-column:1/-1;}
+  .danger{color:var(--sale);border-color:#f3b6c6;}
+  .danger:hover{background:#ffe6ec;}
+
+  /* 로그인 모달 */
+  .lock-overlay{position:fixed;inset:0;background:rgba(44,29,37,.5);z-index:80;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(2px);}
+  .lock-overlay.show{display:flex;}
+  .lock{background:#fff;border-radius:22px;box-shadow:var(--shadow-lg);width:min(360px,100%);padding:28px 26px;text-align:center;}
+  .lock .ic{width:56px;height:56px;border-radius:50%;margin:0 auto 14px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center;}
+  .lock h3{margin:0 0 6px;font-size:19px;font-weight:900;}
+  .lock p{margin:0 0 18px;font-size:13.5px;color:var(--ink-3);line-height:1.55;}
+  .lock input{width:100%;border:1px solid var(--line-2);border-radius:12px;padding:12px 14px;font-size:16px;text-align:center;outline:0;transition:.15s var(--ease);}
+  .lock input:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft);}
+  .lock .err{color:var(--sale);font-size:12.5px;font-weight:700;margin-top:9px;min-height:17px;}
+  .lock button{width:100%;height:46px;border:0;border-radius:999px;background:var(--brand);color:#fff;font-weight:800;font-size:15px;margin-top:4px;transition:.16s var(--ease);}
+  .lock button:hover{background:var(--brand-ink);}
+  .lock .cancel{background:#fff;color:var(--ink-3);border:1px solid var(--line-2);margin-top:8px;}
+  .lock .cancel:hover{background:var(--bg-soft);}
+
+  /* 토스트 */
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:999px;font-weight:700;font-size:14px;box-shadow:var(--shadow-lg);z-index:90;opacity:0;visibility:hidden;transition:.25s var(--ease);display:flex;align-items:center;gap:8px;}
+  .toast.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);}
+
+  @media (max-width:560px){
+    .grid{grid-template-columns:repeat(2,1fr);gap:13px;}
+    .price{font-size:19px;}
+    .title{font-size:13.5px;}
+    .hero{padding:40px 0 20px;}
+    .two{grid-template-columns:1fr;}
+    .search{width:100%;}
+    .tt-btn .lab{display:none;}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}.card:hover{transform:none;}}
+</style>
+</head>
+<body>
+
+  <!-- 헤더 -->
+  <header class="site">
+    <div class="wrap bar">
+      <a class="logo" href="#" aria-label="cabbage nails 홈">
+        <span class="drop"></span>
+        <span class="nm">cabbage</span>
+        <span class="sub">nails</span>
+      </a>
+      <span class="spacer"></span>
+      <a class="tt-btn" id="ttBtn" href="https://www.tiktok.com/@cabbage._6" target="_blank" rel="noopener noreferrer">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.8a4.3 4.3 0 0 1-1-2.8h-3v12.1a2.4 2.4 0 1 1-2-2.4V7.6a5.4 5.4 0 1 0 5 5.4V8.7a7.3 7.3 0 0 0 4 1.2V6.9a4.3 4.3 0 0 1-3-1.1Z"/></svg>
+        <span class="lab">틱톡 채널</span>
+      </a>
+      <button class="gear" id="openAdmin" aria-label="상품 관리 패널 열기" hidden>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- 대가성(공정위) 고지 -->
+  <div class="disclosure">
+    <div class="wrap">본 페이지는 쿠팡 파트너스·알리익스프레스 등 제휴마케팅 활동의 일환으로, 일부 링크를 통해 일정액의 수수료를 제공받을 수 있습니다.</div>
+  </div>
+
+  <!-- 히어로 -->
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow">Shop my nail videos</span>
+      <h1>영상 속 <span class="pink">그 제품</span>,<br>여기서 바로 쇼핑하세요</h1>
+      <p>제 틱톡 네일아트 영상에서 사용한 젤·컬러·도구를 영상별로 모아뒀어요. 마음에 드는 영상을 골라 똑같이 따라 해보세요 💅</p>
+      <a class="handle" href="https://www.tiktok.com/@cabbage._6" target="_blank" rel="noopener noreferrer">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.8a4.3 4.3 0 0 1-1-2.8h-3v12.1a2.4 2.4 0 1 1-2-2.4V7.6a5.4 5.4 0 1 0 5 5.4V8.7a7.3 7.3 0 0 0 4 1.2V6.9a4.3 4.3 0 0 1-3-1.1Z"/></svg>
+        @cabbage._6
+      </a>
+      <div class="dots" aria-hidden="true">
+        <span style="background:#ff7e6b"></span>
+        <span style="background:#f0427e"></span>
+        <span style="background:#7b2230"></span>
+        <span style="background:#e8c6b0"></span>
+        <span style="background:#d9b3ff"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 영상 필터 -->
+  <div class="filters">
+    <div class="wrap">
+      <span class="flabel">🎬 영상별</span>
+      <div class="pillrow" id="videoPills"></div>
+      <label class="search">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg>
+        <input type="search" id="searchInput" placeholder="제품 검색…" aria-label="제품 검색" />
+      </label>
+    </div>
+  </div>
+
+  <!-- 그리드 -->
+  <main>
+    <div class="wrap">
+      <div class="count" id="count"></div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </main>
+
+  <!-- 푸터 -->
+  <footer class="site">
+    <div class="wrap">
+      <div class="nm">cabbage nails</div>
+      <p class="fine">
+        본 페이지는 쿠팡 파트너스·알리익스프레스 등 제휴마케팅 활동의 일환으로, 게시된 일부 링크를 통해 상품이 구매될 경우 운영자가 일정액의 수수료를 제공받을 수 있습니다. 상품 가격·재고·할인 정보는 각 판매처 사정에 따라 실제와 다를 수 있으니, 최종 구매 전 판매 페이지에서 꼭 확인해 주세요.<br>
+        © <span id="year"></span> cabbage nails · <a href="https://www.tiktok.com/@cabbage._6" target="_blank" rel="noopener noreferrer" style="color:var(--brand);font-weight:700;">@cabbage._6</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- 관리자 패널 -->
+  <div class="overlay" id="overlay"></div>
+  <aside class="panel" id="panel" aria-label="상품 관리" aria-hidden="true">
+    <div class="panel-head">
+      <h2 id="panelTitle">제품 등록</h2>
+      <button class="x" id="closeAdmin" aria-label="패널 닫기">✕</button>
+    </div>
+    <div class="panel-body">
+      <div class="help">
+        <b>💅 이렇게 등록하세요</b><br>
+        ① 제품 정보를 채우고 <b>영상 선택</b>에서 어떤 영상에 쓴 건지 골라요. (처음엔 <b>새 영상 추가</b>로 등록하면 다음부턴 목록에서 바로 선택돼요!)<br>
+        ② <b>컬러 스와치</b>를 켜면 카드에 젤 색상이 예쁘게 표시돼요.<br>
+        ③ 다 끝나면 아래 <b>코드 복사</b>로 영구 저장용 코드를 받아 파일에 붙여넣고 다시 올리면 끝!
+      </div>
+
+      <form id="productForm" autocomplete="off">
+        <div class="field">
+          <label for="f_name">제품명</label>
+          <input type="text" id="f_name" placeholder="예) 시럽 젤네일 코랄피치" required />
+        </div>
+
+        <div class="field">
+          <label for="f_link">구매 링크 (내 제휴 링크)</label>
+          <input type="url" id="f_link" placeholder="https://..." required />
+        </div>
+
+        <div class="field">
+          <label for="f_video">🎬 영상 선택</label>
+          <select id="f_video"></select>
+        </div>
+        <div class="nv" id="newVideo" style="display:none">
+          <div class="field">
+            <label for="f_videoTitle">새 영상 제목</label>
+            <input type="text" id="f_videoTitle" placeholder="예) 🫧 물방울 시럽네일" />
+          </div>
+          <div class="field">
+            <label for="f_videoUrl">새 영상 틱톡 링크</label>
+            <input type="url" id="f_videoUrl" placeholder="https://www.tiktok.com/@cabbage._6/video/..." />
+          </div>
+        </div>
+
+        <div class="two">
+          <div class="field">
+            <label for="f_platform">구매처</label>
+            <select id="f_platform">
+              <option value="coupang">쿠팡</option>
+              <option value="ali">알리</option>
+              <option value="temu">테무</option>
+              <option value="oliveyoung">올리브영</option>
+              <option value="naver">네이버</option>
+              <option value="etc">기타</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f_currency">통화</label>
+            <select id="f_currency">
+              <option value="KRW">원 (₩)</option>
+              <option value="USD">달러 ($)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="two">
+          <div class="field">
+            <label for="f_price">판매가</label>
+            <input type="number" id="f_price" placeholder="9900" min="0" step="0.01" />
+          </div>
+          <div class="field">
+            <label for="f_orig">정상가 <span class="opt">(선택)</span></label>
+            <input type="number" id="f_orig" placeholder="13000" min="0" step="0.01" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="f_image">이미지 URL <span class="opt">(선택 · 비우면 컬러 타일)</span></label>
+          <input type="url" id="f_image" placeholder="https://...jpg" />
+        </div>
+
+        <label class="chk"><input type="checkbox" id="f_hasColor" /> 🎨 컬러 스와치 표시</label>
+        <div class="colorbox" id="colorFields" style="display:none">
+          <div class="cwrap field" style="margin-bottom:0">
+            <label for="f_color">색상</label>
+            <input type="color" id="f_color" value="#f0427e" />
+          </div>
+          <div class="cname field" style="margin-bottom:0">
+            <label for="f_colorName">컬러 이름 <span class="opt">(선택)</span></label>
+            <input type="text" id="f_colorName" placeholder="예) 코랄피치" />
+          </div>
+        </div>
+
+        <button type="submit" class="submit" id="submitBtn">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          제품 추가
+        </button>
+        <button type="button" class="ghost" id="cancelEdit" style="display:none">수정 취소</button>
+      </form>
+
+      <div class="sect-title">등록된 제품 (<span id="adminCount">0</span>)</div>
+      <div class="admin-list" id="adminList"></div>
+
+      <div class="sect-title">저장 · 백업</div>
+      <div class="tools">
+        <button class="ghost full" id="copyCode">📋 코드 복사 (영구 저장용)</button>
+        <button class="ghost" id="exportJson">⬇ JSON 내보내기</button>
+        <button class="ghost" id="importBtn">⬆ JSON 가져오기</button>
+        <button class="ghost full danger" id="resetAll">전체 초기화</button>
+        <button class="ghost full" id="logoutBtn">🔒 관리자 로그아웃</button>
+        <input type="file" id="importFile" accept="application/json,.json" hidden />
+      </div>
+    </div>
+  </aside>
+
+  <!-- 관리자 로그인 -->
+  <div class="lock-overlay" id="lockOverlay">
+    <div class="lock" role="dialog" aria-modal="true" aria-label="관리자 로그인">
+      <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+      <h3>관리자 로그인</h3>
+      <p>제품을 등록·수정하려면<br>비밀번호를 입력하세요.</p>
+      <input type="password" id="lockInput" placeholder="비밀번호" autocomplete="current-password" />
+      <div class="err" id="lockErr"></div>
+      <button id="lockSubmit">들어가기</button>
+      <button class="cancel" id="lockCancel">닫기</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* =========================================================
+     구매처 정보
+     ========================================================= */
+  var PLATFORMS = {
+    coupang:{ label:"쿠팡", color:"#e5142b" },
+    ali:{ label:"알리", color:"#ff5b2e" },
+    temu:{ label:"테무", color:"#fb7701" },
+    oliveyoung:{ label:"올리브영", color:"#74b42a" },
+    naver:{ label:"네이버", color:"#03c75a" },
+    etc:{ label:"기타", color:"#c98aa6" }
+  };
+
+  /* =========================================================
+     ★★★ 영상 + 제품 목록 ★★★
+     관리자 패널에서 등록 후 '코드 복사'한 내용을 아래에 붙여넣으면
+     모든 방문자에게 동일하게 보입니다.
+     · link  : 내 제휴(구매) 링크
+     · videoUrl/videoTitle : 어떤 틱톡 영상에서 썼는지
+     · colorHex/colorName  : (선택) 젤 색상 스와치
+     ========================================================= */
+  var V1 = { title:"🫧 물방울 시럽네일", url:"https://www.tiktok.com/@cabbage._6" };
+  var V2 = { title:"🐈 마그네틱 캣츠아이", url:"https://www.tiktok.com/@cabbage._6" };
+  var V3 = { title:"🤍 프렌치 글리터 네일", url:"https://www.tiktok.com/@cabbage._6" };
+
+  var INITIAL_PRODUCTS = [
+    { id:"p1", name:"시럽 젤네일 코랄피치", platform:"oliveyoung", link:"https://www.oliveyoung.co.kr/", image:"", price:9900, orig:13000, currency:"KRW", videoTitle:V1.title, videoUrl:V1.url, colorHex:"#ff7e6b", colorName:"코랄피치", note:"" },
+    { id:"p2", name:"글로시 탑코트 (광 끝판왕)", platform:"coupang", link:"https://www.coupang.com/", image:"", price:8500, orig:null, currency:"KRW", videoTitle:V1.title, videoUrl:V1.url, colorHex:"", colorName:"", note:"" },
+    { id:"p3", name:"도트 네일아트 브러시 세트", platform:"ali", link:"https://www.aliexpress.com/", image:"", price:2.30, orig:4.50, currency:"USD", videoTitle:V1.title, videoUrl:V1.url, colorHex:"", colorName:"", note:"" },
+    { id:"p4", name:"마그네틱 젤 버건디", platform:"naver", link:"https://shopping.naver.com/", image:"", price:12000, orig:null, currency:"KRW", videoTitle:V2.title, videoUrl:V2.url, colorHex:"#7b2230", colorName:"버건디", note:"" },
+    { id:"p5", name:"캣츠아이 자석 스틱", platform:"ali", link:"https://www.aliexpress.com/", image:"", price:1.90, orig:null, currency:"USD", videoTitle:V2.title, videoUrl:V2.url, colorHex:"", colorName:"", note:"" },
+    { id:"p6", name:"컬러 베이스 젤 누드", platform:"coupang", link:"https://www.coupang.com/", image:"", price:7900, orig:null, currency:"KRW", videoTitle:V2.title, videoUrl:V2.url, colorHex:"#e8c6b0", colorName:"누드베이지", note:"" },
+    { id:"p7", name:"오로라 홀로 글리터 파우더", platform:"ali", link:"https://www.aliexpress.com/", image:"", price:3.50, orig:6.00, currency:"USD", videoTitle:V3.title, videoUrl:V3.url, colorHex:"#d9b3ff", colorName:"오로라", note:"" },
+    { id:"p8", name:"프렌치 라이너 브러시", platform:"oliveyoung", link:"https://www.oliveyoung.co.kr/", image:"", price:6500, orig:null, currency:"KRW", videoTitle:V3.title, videoUrl:V3.url, colorHex:"", colorName:"", note:"" },
+    { id:"p9", name:"젤네일 UV/LED 램프 48W", platform:"coupang", link:"https://www.coupang.com/", image:"", price:29900, orig:45000, currency:"KRW", videoTitle:"", videoUrl:"", colorHex:"", colorName:"", note:"모든 영상 공통 사용" },
+    { id:"p10", name:"네일 파일 100/180 (10개입)", platform:"ali", link:"https://www.aliexpress.com/", image:"", price:1.20, orig:null, currency:"USD", videoTitle:"", videoUrl:"", colorHex:"", colorName:"", note:"" }
+  ];
+
+  var STORAGE_KEY = "cabbage_nails_products_v1";
+
+  /* ===========================================================
+     ★ 관리자 비밀번호 — 반드시 본인만 아는 값으로 바꾸세요!
+     아래 "1234"를 원하는 비밀번호로 교체하면 됩니다.
+     =========================================================== */
+  var ADMIN_PASSWORD = "1234";
+  var UNLOCK_KEY = "cabbage_nails_unlocked_v1";
+
+  /* =========================================================
+     상태
+     ========================================================= */
+  var products = load();
+  var filter = { video:"all", q:"" };
+  var editingId = null;
+
+  /* =========================================================
+     유틸
+     ========================================================= */
+  function clone(x){ return JSON.parse(JSON.stringify(x)); }
+  function load(){
+    try{ var s = localStorage.getItem(STORAGE_KEY); if(s){ var p = JSON.parse(s); if(Array.isArray(p) && p.length) return p; } }catch(e){}
+    return clone(INITIAL_PRODUCTS);
+  }
+  function save(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(products)); }catch(e){} }
+  function uid(){ return "p" + Date.now().toString(36) + Math.random().toString(36).slice(2,5); }
+  function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+  function fmtPrice(v, cur){
+    if(v==null || v==="" || isNaN(v)) return "";
+    var n = Number(v);
+    if(cur === "USD") return "$" + n.toLocaleString("en-US", {minimumFractionDigits:(n%1?2:0), maximumFractionDigits:2});
+    return n.toLocaleString("ko-KR") + "원";
+  }
+  function discPct(price, orig){
+    if(price==null || orig==null || isNaN(price) || isNaN(orig)) return 0;
+    if(Number(orig) <= Number(price)) return 0;
+    return Math.round((1 - Number(price)/Number(orig)) * 100);
+  }
+  function $(id){ return document.getElementById(id); }
+
+  function uniqueVideos(){
+    var seen = {}, out = [];
+    products.forEach(function(p){
+      if(p.videoUrl && !seen[p.videoUrl]){ seen[p.videoUrl] = true; out.push({ url:p.videoUrl, title:p.videoTitle || p.videoUrl }); }
+    });
+    return out;
+  }
+
+  /* =========================================================
+     렌더 — 그리드
+     ========================================================= */
+  function filtered(){
+    var q = filter.q.trim().toLowerCase();
+    return products.filter(function(p){
+      if(filter.video !== "all" && p.videoUrl !== filter.video) return false;
+      if(q){
+        var hay = ((p.name||"")+" "+(p.videoTitle||"")+" "+(p.colorName||"")+" "+((PLATFORMS[p.platform]||{}).label||"")).toLowerCase();
+        if(hay.indexOf(q) === -1) return false;
+      }
+      return true;
+    });
+  }
+
+  function cardHTML(p){
+    var pf = PLATFORMS[p.platform] || { label:"기타", color:"#c98aa6" };
+    var pct = discPct(p.price, p.orig);
+    var hasImg = p.image && String(p.image).trim();
+    var href = (p.link && String(p.link).trim()) ? esc(p.link) : "#";
+    var tile = (p.colorHex && String(p.colorHex).trim()) ? esc(p.colorHex) : pf.color;
+
+    var thumbInner = hasImg
+      ? '<img src="'+esc(p.image)+'" alt="'+esc(p.name)+'" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'+
+        '<div class="thumb-ph" style="display:none;--tile:'+tile+'"><span class="pic">💅</span><span class="pname">'+esc(p.name)+'</span></div>'
+      : '<div class="thumb-ph" style="display:flex;--tile:'+tile+'"><span class="pic">💅</span><span class="pname">'+esc(p.name)+'</span></div>';
+
+    var vchip = (p.videoUrl && String(p.videoUrl).trim())
+      ? '<a class="vchip" href="'+esc(p.videoUrl)+'" target="_blank" rel="noopener noreferrer" title="영상 보기">'+
+          '<svg class="play" width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>'+
+          '<span class="vt">'+esc(p.videoTitle || "영상 보기")+'</span>'+
+        '</a>'
+      : '';
+
+    var colorline = (p.colorHex && String(p.colorHex).trim())
+      ? '<div class="colorline"><span class="swatch-dot" style="--c:'+esc(p.colorHex)+'"></span>'+esc(p.colorName || "사용 컬러")+'</div>'
+      : '';
+
+    var priceHTML = (p.price!=null && p.price!=="" && !isNaN(p.price))
+      ? '<div class="price-row"><span class="price">'+esc(fmtPrice(p.price,p.currency))+'</span>'+
+        ((p.orig!=null && p.orig!=="" && !isNaN(p.orig) && Number(p.orig)>Number(p.price)) ? '<span class="orig">'+esc(fmtPrice(p.orig,p.currency))+'</span>' : '')+
+        '</div>'
+      : '';
+
+    return ''+
+    '<article class="card">'+
+      '<div class="thumb">'+
+        '<a class="thumb-link" href="'+href+'" target="_blank" rel="nofollow sponsored noopener noreferrer">'+
+          '<span class="badge" style="background:'+pf.color+'">'+esc(pf.label)+'</span>'+
+          (pct>0 ? '<span class="disc">'+pct+'%</span>' : '')+
+          thumbInner+
+        '</a>'+
+        vchip+
+      '</div>'+
+      '<div class="body">'+
+        '<a class="title" href="'+href+'" target="_blank" rel="nofollow sponsored noopener noreferrer">'+esc(p.name)+'</a>'+
+        colorline+
+        priceHTML+
+        '<a class="cta" href="'+href+'" target="_blank" rel="nofollow sponsored noopener noreferrer">구매하기'+
+          ' <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'+
+        '</a>'+
+      '</div>'+
+    '</article>';
+  }
+
+  function renderGrid(){
+    var list = filtered();
+    var grid = $("grid");
+    if(!list.length){
+      grid.innerHTML = '<div class="empty"><div class="big">표시할 제품이 없어요</div>다른 영상을 골라보거나, 우측 상단 관리에서 제품을 추가해 보세요.</div>';
+      $("count").textContent = "";
+      return;
+    }
+    grid.innerHTML = list.map(cardHTML).join("");
+    $("count").textContent = "총 " + list.length + "개 제품";
+  }
+
+  /* =========================================================
+     렌더 — 영상 필터
+     ========================================================= */
+  function renderVideoPills(){
+    var vids = uniqueVideos();
+    var html = '<button class="fpill" data-video="all" aria-pressed="'+(filter.video==="all")+'">전체</button>';
+    vids.forEach(function(v){
+      html += '<button class="fpill" data-video="'+esc(v.url)+'" aria-pressed="'+(filter.video===v.url)+'">'+esc(v.title)+'</button>';
+    });
+    $("videoPills").innerHTML = html;
+  }
+
+  /* =========================================================
+     관리자 — 영상 선택 셀렉트
+     ========================================================= */
+  function buildVideoSelect(selectedUrl){
+    var vids = uniqueVideos();
+    var html = '<option value="">영상 선택 안 함</option>';
+    vids.forEach(function(v){
+      html += '<option value="'+esc(v.url)+'" data-title="'+esc(v.title)+'">'+esc(v.title)+'</option>';
+    });
+    html += '<option value="__new__">+ 새 영상 추가</option>';
+    $("f_video").innerHTML = html;
+    if(selectedUrl != null) $("f_video").value = selectedUrl;
+    toggleNewVideo();
+  }
+  function toggleNewVideo(){
+    $("newVideo").style.display = ($("f_video").value === "__new__") ? "block" : "none";
+  }
+
+  /* =========================================================
+     관리자 — 목록 / 폼
+     ========================================================= */
+  function renderAdminList(){
+    var list = $("adminList");
+    $("adminCount").textContent = products.length;
+    if(!products.length){ list.innerHTML = '<div style="font-size:13px;color:var(--ink-3);padding:6px 2px;">아직 등록된 제품이 없어요.</div>'; return; }
+    list.innerHTML = products.map(function(p){
+      var pf = PLATFORMS[p.platform] || {label:"기타",color:"#c98aa6"};
+      var tile = (p.colorHex && String(p.colorHex).trim()) ? p.colorHex : pf.color;
+      var hasImg = p.image && String(p.image).trim();
+      var thumb = hasImg
+        ? '<img class="li-thumb" src="'+esc(p.image)+'" alt="" onerror="this.outerHTML=\'<div class=\\\'li-thumb\\\' style=\\\'background:'+tile+'\\\'></div>\'">'
+        : '<div class="li-thumb" style="background:'+tile+'"></div>';
+      var vlabel = p.videoTitle ? p.videoTitle : "영상 없음";
+      return '<div class="li">'+
+        thumb+
+        '<div class="li-info"><div class="n">'+esc(p.name)+'</div><div class="m">'+esc(pf.label)+' · 🎬 '+esc(vlabel)+'</div></div>'+
+        '<div class="li-act">'+
+          '<button class="mini" data-edit="'+esc(p.id)+'" aria-label="수정" title="수정">✎</button>'+
+          '<button class="mini del" data-del="'+esc(p.id)+'" aria-label="삭제" title="삭제">🗑</button>'+
+        '</div>'+
+      '</div>';
+    }).join("");
+  }
+
+  function resetForm(){
+    editingId = null;
+    $("productForm").reset();
+    $("f_platform").value = "coupang";
+    $("f_currency").value = "KRW";
+    $("f_color").value = "#f0427e";
+    $("f_hasColor").checked = false;
+    $("colorFields").style.display = "none";
+    buildVideoSelect("");
+    $("panelTitle").textContent = "제품 등록";
+    var btn = $("submitBtn");
+    btn.classList.remove("editing");
+    btn.innerHTML = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> 제품 추가';
+    $("cancelEdit").style.display = "none";
+  }
+
+  function fillForm(id){
+    var p = products.find(function(x){ return x.id === id; });
+    if(!p) return;
+    editingId = id;
+    $("f_name").value = p.name || "";
+    $("f_link").value = p.link || "";
+    $("f_platform").value = p.platform || "coupang";
+    $("f_currency").value = p.currency || "KRW";
+    $("f_price").value = (p.price==null?"":p.price);
+    $("f_orig").value = (p.orig==null?"":p.orig);
+    $("f_image").value = p.image || "";
+    // 영상
+    buildVideoSelect(p.videoUrl || "");
+    if(p.videoUrl && $("f_video").value !== p.videoUrl){
+      // 목록에 없으면 새 영상으로 채움
+      $("f_video").value = "__new__";
+      toggleNewVideo();
+      $("f_videoTitle").value = p.videoTitle || "";
+      $("f_videoUrl").value = p.videoUrl || "";
+    }
+    // 컬러
+    if(p.colorHex){
+      $("f_hasColor").checked = true;
+      $("colorFields").style.display = "flex";
+      $("f_color").value = p.colorHex;
+      $("f_colorName").value = p.colorName || "";
+    }else{
+      $("f_hasColor").checked = false;
+      $("colorFields").style.display = "none";
+    }
+    $("panelTitle").textContent = "제품 수정";
+    var btn = $("submitBtn");
+    btn.classList.add("editing");
+    btn.innerHTML = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> 수정 저장';
+    $("cancelEdit").style.display = "block";
+    $("panel").querySelector(".panel-body").scrollTo({top:0, behavior:"smooth"});
+  }
+
+  function handleSubmit(e){
+    e.preventDefault();
+    var name = $("f_name").value.trim();
+    var link = $("f_link").value.trim();
+    if(!name){ toast("제품명을 입력해 주세요"); $("f_name").focus(); return; }
+    if(!link){ toast("구매 링크를 입력해 주세요"); $("f_link").focus(); return; }
+
+    // 영상 결정
+    var vTitle = "", vUrl = "";
+    var vSel = $("f_video");
+    if(vSel.value === "__new__"){
+      vTitle = $("f_videoTitle").value.trim();
+      vUrl = $("f_videoUrl").value.trim();
+    }else if(vSel.value){
+      vUrl = vSel.value;
+      var opt = vSel.options[vSel.selectedIndex];
+      vTitle = opt ? (opt.getAttribute("data-title") || opt.text) : "";
+    }
+
+    var priceVal = $("f_price").value;
+    var origVal = $("f_orig").value;
+    var hasColor = $("f_hasColor").checked;
+
+    var data = {
+      name: name,
+      link: link,
+      platform: $("f_platform").value,
+      image: $("f_image").value.trim(),
+      price: priceVal === "" ? null : Number(priceVal),
+      orig: origVal === "" ? null : Number(origVal),
+      currency: $("f_currency").value,
+      videoTitle: vTitle,
+      videoUrl: vUrl,
+      colorHex: hasColor ? $("f_color").value : "",
+      colorName: hasColor ? $("f_colorName").value.trim() : "",
+      note: ""
+    };
+
+    if(editingId){
+      var i = products.findIndex(function(x){ return x.id === editingId; });
+      if(i > -1){ data.id = editingId; data.note = products[i].note || ""; products[i] = data; }
+      toast("제품을 수정했어요 ✓");
+    }else{
+      data.id = uid();
+      products.unshift(data);
+      toast("제품을 추가했어요 ✓");
+    }
+    save();
+    resetForm();
+    refreshAll();
+  }
+
+  function deleteProduct(id){
+    var p = products.find(function(x){ return x.id === id; });
+    if(!p) return;
+    if(!confirm('"' + p.name + '" 제품을 삭제할까요?')) return;
+    products = products.filter(function(x){ return x.id !== id; });
+    if(editingId === id) resetForm();
+    save();
+    refreshAll();
+    toast("삭제했어요");
+  }
+
+  /* =========================================================
+     저장 · 백업
+     ========================================================= */
+  function copyToClipboard(text, okMsg){
+    function fallback(){
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.style.position="fixed"; ta.style.opacity="0";
+      document.body.appendChild(ta); ta.select();
+      try{ document.execCommand("copy"); toast(okMsg); }catch(e){ toast("복사 실패 — 직접 선택해 복사하세요"); }
+      document.body.removeChild(ta);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(function(){ toast(okMsg); }, fallback); }
+    else { fallback(); }
+  }
+  function copyCode(){
+    var code = "var INITIAL_PRODUCTS = " + JSON.stringify(products, null, 2) + ";";
+    copyToClipboard(code, "코드를 복사했어요 ✓ 파일에 붙여넣으세요");
+  }
+  function exportJson(){
+    var blob = new Blob([JSON.stringify(products, null, 2)], {type:"application/json"});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url; a.download = "cabbage-nails-products.json";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+    toast("JSON을 내보냈어요 ✓");
+  }
+  function importJson(file){
+    var reader = new FileReader();
+    reader.onload = function(ev){
+      try{
+        var data = JSON.parse(ev.target.result);
+        if(!Array.isArray(data)) throw new Error("형식 오류");
+        products = data.map(function(p){ if(!p.id) p.id = uid(); return p; });
+        save(); resetForm(); refreshAll();
+        toast("불러왔어요 ✓ 총 " + products.length + "개");
+      }catch(err){ toast("가져오기 실패 — JSON 파일을 확인하세요"); }
+    };
+    reader.readAsText(file);
+  }
+  function resetAll(){
+    if(!confirm("등록한 모든 제품을 지우고 기본 샘플로 되돌릴까요?")) return;
+    products = clone(INITIAL_PRODUCTS);
+    save(); resetForm(); refreshAll();
+    toast("기본 상태로 초기화했어요");
+  }
+
+  /* =========================================================
+     관리자 잠금 (로그인)
+     ========================================================= */
+  function isUnlocked(){ try{ return localStorage.getItem(UNLOCK_KEY) === "1"; }catch(e){ return false; } }
+  function setUnlocked(v){ try{ if(v){ localStorage.setItem(UNLOCK_KEY,"1"); } else { localStorage.removeItem(UNLOCK_KEY); } }catch(e){} }
+  function revealAdminBtn(){ $("openAdmin").hidden = false; }
+  function showLock(){ $("lockOverlay").classList.add("show"); $("lockErr").textContent=""; $("lockInput").value=""; setTimeout(function(){ $("lockInput").focus(); }, 60); }
+  function hideLock(){ $("lockOverlay").classList.remove("show"); }
+  function tryLogin(){
+    if($("lockInput").value === ADMIN_PASSWORD){ setUnlocked(true); revealAdminBtn(); hideLock(); openAdmin(); }
+    else { $("lockErr").textContent = "비밀번호가 올바르지 않습니다."; $("lockInput").select(); }
+  }
+  function logout(){ setUnlocked(false); $("openAdmin").hidden = true; closeAdmin(); toast("로그아웃했어요"); }
+
+  /* =========================================================
+     패널 / 토스트
+     ========================================================= */
+  function openAdmin(){
+    if(!isUnlocked()){ showLock(); return; }
+    $("overlay").classList.add("show");
+    $("panel").classList.add("show");
+    $("panel").setAttribute("aria-hidden","false");
+    document.body.style.overflow = "hidden";
+  }
+  function closeAdmin(){
+    $("overlay").classList.remove("show");
+    $("panel").classList.remove("show");
+    $("panel").setAttribute("aria-hidden","true");
+    document.body.style.overflow = "";
+  }
+
+  var toastTimer = null;
+  function toast(msg){
+    var t = $("toast");
+    t.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>' + esc(msg);
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ t.classList.remove("show"); }, 2200);
+  }
+
+  /* =========================================================
+     리프레시 / 이벤트
+     ========================================================= */
+  function refreshAll(){
+    renderVideoPills();
+    renderGrid();
+    renderAdminList();
+    buildVideoSelect($("f_video") ? $("f_video").value : "");
+  }
+
+  function init(){
+    $("year").textContent = new Date().getFullYear();
+    renderVideoPills();
+    renderGrid();
+    renderAdminList();
+    buildVideoSelect("");
+
+    // 영상 필터
+    $("videoPills").addEventListener("click", function(e){
+      var b = e.target.closest("[data-video]"); if(!b) return;
+      filter.video = b.getAttribute("data-video");
+      renderVideoPills(); renderGrid();
+    });
+    // 검색
+    $("searchInput").addEventListener("input", function(e){ filter.q = e.target.value; renderGrid(); });
+
+    // 영상 셀렉트 토글
+    $("f_video").addEventListener("change", toggleNewVideo);
+    // 컬러 토글
+    $("f_hasColor").addEventListener("change", function(){ $("colorFields").style.display = this.checked ? "flex" : "none"; });
+
+    // 패널 + 관리자 잠금
+    $("openAdmin").addEventListener("click", openAdmin);
+    $("closeAdmin").addEventListener("click", closeAdmin);
+    $("overlay").addEventListener("click", closeAdmin);
+    document.addEventListener("keydown", function(e){ if(e.key === "Escape"){ closeAdmin(); hideLock(); } });
+    $("lockSubmit").addEventListener("click", tryLogin);
+    $("lockCancel").addEventListener("click", hideLock);
+    $("lockInput").addEventListener("keydown", function(e){ if(e.key === "Enter") tryLogin(); });
+
+    if(isUnlocked()) revealAdminBtn();
+    function checkHash(){ if(location.hash === "#admin"){ if(isUnlocked()){ openAdmin(); } else { showLock(); } } }
+    window.addEventListener("hashchange", checkHash);
+    checkHash();
+
+    // 폼
+    $("productForm").addEventListener("submit", handleSubmit);
+    $("cancelEdit").addEventListener("click", resetForm);
+    $("adminList").addEventListener("click", function(e){
+      var ed = e.target.closest("[data-edit]");
+      var de = e.target.closest("[data-del]");
+      if(ed) fillForm(ed.getAttribute("data-edit"));
+      if(de) deleteProduct(de.getAttribute("data-del"));
+    });
+
+    // 백업
+    $("copyCode").addEventListener("click", copyCode);
+    $("exportJson").addEventListener("click", exportJson);
+    $("importBtn").addEventListener("click", function(){ $("importFile").click(); });
+    $("importFile").addEventListener("change", function(e){ if(e.target.files[0]) importJson(e.target.files[0]); e.target.value=""; });
+    $("resetAll").addEventListener("click", resetAll);
+    $("logoutBtn").addEventListener("click", logout);
+  }
+
+  if(document.readyState === "loading"){ document.addEventListener("DOMContentLoaded", init); }
+  else { init(); }
+})();
+</script>
+</body>
+</html>
